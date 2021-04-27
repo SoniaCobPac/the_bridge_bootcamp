@@ -4,13 +4,14 @@
 
 **Work-in:**
 
-1. Python VII
+1. Git
+2. Python VII
 
 ---------
 
 **Work-out:**
 
-2. Python exercises
+3. Python exercises
 
 ---------
 
@@ -45,4 +46,4 @@
 
 - borja@thebridgeschool.es
 
-*Tutorials*: https://calendly.com/borja_data_science/15min
+*Tutorials*: https://calendly.com/borpuig/15min
