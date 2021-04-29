@@ -15,7 +15,7 @@ class Orco():
         return humano.salud
         
     def no_vivo(self):
-        if self.salud <= 0:
+        if int(self.salud) <= 0:
             return True
         else:
             return False
