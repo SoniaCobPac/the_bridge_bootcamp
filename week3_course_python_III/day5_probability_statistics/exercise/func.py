@@ -1,5 +1,6 @@
 import numpy as np 
 from re import split
+import json
 
 # Esta función recibe una lista con los elementos de la posición de un barco 
 # y modifica el tablero de juego para dibujarlo
@@ -17,7 +18,6 @@ def print_board_enemy (Tablero):
     print("--------------------------------------------")   
 
 def launch_torpedo(board):
-    
     #player_name = "First_player ->"+ input("Enter your name: ")
     coord = input("Enter coordinates (row x column): ")
 
@@ -41,8 +41,21 @@ def launch_torpedo(board):
         board[coord_x][coord_y] = "o"
         #print(board)
     # Comprobamos si ya no quedan mas barcos
-    if "#" not in board:
+    if "#" not in np.array(board):
         print("You have destroyed my fleet, you win!")
         return False
     else:
         return True  
+
+def guardado_auto (name_J1,Tablero_J1, Flota_J1,name_J2,Tablero_J2, Flota_J2, turno):
+    # Se guarda el avance de la partida en la carpeta del histórico
+    nombre_archivo = f"HundirFlota_T{turno}.json"
+    mi_diccionario = {"Name_J1": name_J1, 
+                    "Flota_J1": Flota_J1, 
+                    "Tablero_J1":Tablero_J1,
+                    "Name_J2": name_J2, 
+                    "Flota_J2": Flota_J2, 
+                    "Tablero_J2":Tablero_J2,
+                    "Turno":turno}
+    with open(nombre_archivo, 'w+') as outfile:
+        json.dump(mi_diccionario, outfile, indent=4)

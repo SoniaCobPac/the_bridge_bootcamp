@@ -1,4 +1,7 @@
 import func as fc
+import numpy as np 
+import random
+import json
 
 def iniciar_tablero (Tablero):
     for i in range (10):
@@ -15,11 +18,19 @@ def insert_boat_check(pos_str, boat_len, Tablero):
 
         # comprobación de elementos de una inserción vertical 
         if pos_str.count("v")==1:   # Debe haber una única letra de orientación
-            ori = "v"
-   
+            if pos_str.count ("h") == 0:    # no puede ser horizontal
+                ori = "v"
+            else:
+                print("Position format error for this boat, type it again.")
+                return False
+
         # comprobación de elementos de una inserción horizontal 
         elif pos_str.count("h")==1: # Debe haber una única letra de orientación
-            ori = "h"
+            if pos_str.count ("v") == 0:    # no puede ser vertical
+                ori = "h"
+            else:
+                print("Position format error for this boat, type it again.")
+                return False
         else:
             print("Position format error for this boat, type it again.")
             return False
@@ -80,7 +91,7 @@ def insert_boat_check(pos_str, boat_len, Tablero):
 
 def insertar_flota(Tablero, flota):
     # Bloque de inserción de los 4 barcos 2x1
-    for i in range (4):
+    for i in range (3):
         test_boat_type = 2
         insert2x1 = False
         while insert2x1 != True:
@@ -90,7 +101,7 @@ def insertar_flota(Tablero, flota):
             else:
                 insert2x1 = insert_boat_check(test_position, test_boat_type, Tablero)
         flota["2x1_"+str(i+1)] = test_position
-
+"""
     # Bloque de inserción de los 3 barcos 3x1
     for i in range (3):
         test_boat_type = 3
@@ -125,3 +136,54 @@ def insertar_flota(Tablero, flota):
         else:
             insert5x1 = insert_boat_check(test_position, test_boat_type, Tablero)
     flota["5x1_1"] = test_position
+    """
+
+def inicializar_partida (name_J1,Tablero_J1, Flota_J1,name_J2,Tablero_J2, Flota_J2):
+    # Se inician los perfiles de los jugadores y se elige cual de ellos es el primero
+    name_one = input("Please insert the name of one player:")
+    name_other = input("Please insert the name of the other player:")
+    order = random.randint(0,1)
+    if order == 0:
+        name_J1 = name_one
+        name_J2 = name_other
+    else:
+        name_J2 = name_one
+        name_J1 = name_other
+    print(f"El primer jugador será {name_J1} y el segundo será {name_J2}")
+
+    # Se generan el tablero y la flota del jugador 1
+    iniciar_tablero (Tablero_J1)
+
+    insertar_flota(Tablero_J1, Flota_J1)
+    Tablero_J1 = np.array(Tablero_J1)
+
+    print(Flota_J1)
+    fc.print_board(Tablero_J1)
+
+    # Se generan el tablero y la flota del jugador 2
+    iniciar_tablero (Tablero_J2)
+
+    insertar_flota(Tablero_J2, Flota_J2)
+    Tablero_J2 = np.array(Tablero_J2)
+
+    print(Flota_J2)
+    fc.print_board (Tablero_J2)
+
+    # Se guarda la partida inicializada
+    nombre_archivo_J1 = "Partida_J1.json"
+    mi_diccionario_J1 = {"Name_J1": name_J1, 
+                    "Flota_J1": Flota_J1, 
+                    "Tablero_J1":Tablero_J1.tolist(),
+                    "Turno":1}
+
+    nombre_archivo_J2 = "Partida_J2.json"
+    mi_diccionario_J2 = {"Name_J2": name_J2, 
+                    "Flota_J2": Flota_J2, 
+                    "Tablero_J2":Tablero_J2.tolist(),
+                    "Turno":1}
+
+    with open(nombre_archivo_J1, 'w+') as outfile:
+        json.dump(mi_diccionario_J1, outfile, indent=4)
+
+    with open(nombre_archivo_J2, 'w+') as outfile:
+        json.dump(mi_diccionario_J2, outfile, indent=4)
