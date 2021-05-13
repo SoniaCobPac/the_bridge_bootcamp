@@ -3,14 +3,14 @@ import numpy as np
 import random
 import json
 
-def iniciar_tablero (Tablero):
+def create_board (board):
     for i in range (10):
-        Columnas = []
+        columnas = []
         for j in range(10):
-            Columnas.append("~")
-        Tablero.append(Columnas)
+            columnas.append("~")
+        board.append(columnas)
 
-def insert_boat_check(pos_str, boat_len, Tablero):
+def insert_boat_check(pos_str, boat_len, board):
 
     # lo primero es comprobar si el formato de insercion es el correcto
     # los dos puntos son un elemento constante en la inserción de posición
@@ -72,16 +72,16 @@ def insert_boat_check(pos_str, boat_len, Tablero):
     # Por último, se comprueban las posiciones ya ocupadas del tablero
     if list_posi[0] == 'h':
         for i in range(list_posi[2]-1, list_posi[3]):
-            if Tablero[list_posi[1]-1][i] == '~':
-                Tablero[list_posi[1]-1][i] = '#'
+            if board[list_posi[1]-1][i] == '~':
+                board[list_posi[1]-1][i] = '#'
             else:
                 print("One of the positions of the boat is already taken.")
                 return False
         return True
     else: 
         for i in range(list_posi[2]-1, list_posi[3]):
-            if Tablero[i][list_posi[1]-1] == '~':
-                Tablero[i][list_posi[1]-1] = '#'
+            if board[i][list_posi[1]-1] == '~':
+                board[i][list_posi[1]-1] = '#'
             else:
                 print("One of the positions of the boat is alreaady taken.")
                 return False
@@ -89,18 +89,18 @@ def insert_boat_check(pos_str, boat_len, Tablero):
 
     return list_posi
 
-def insertar_flota(Tablero, flota):
+def insert_fleet(board, fleet):
     # Bloque de inserción de los 4 barcos 2x1
-    for i in range (3):
+    for i in range (1):
         test_boat_type = 2
         insert2x1 = False
         while insert2x1 != True:
             test_position = input("Please insert a 2x1 boat position (type 'BOARD' to display the current setting of the fleet):")
             if test_position == "BOARD":
-                fc.print_board(Tablero)
+                fc.print_board(board)
             else:
-                insert2x1 = insert_boat_check(test_position, test_boat_type, Tablero)
-        flota["2x1_"+str(i+1)] = test_position
+                insert2x1 = insert_boat_check(test_position, test_boat_type, board)
+        fleet["2x1_"+str(i+1)] = test_position
 """
     # Bloque de inserción de los 3 barcos 3x1
     for i in range (3):
@@ -109,10 +109,10 @@ def insertar_flota(Tablero, flota):
         while insert3x1 != True:
             test_position = input("Please insert a 3x1 boat position (type 'BOARD' to display the current setting of the fleet):")
             if test_position == "BOARD":
-                fc.print_board(Tablero)
+                fc.print_board(board)
             else:
-                insert3x1 = insert_boat_check(test_position, test_boat_type, Tablero)
-        flota["3x1_"+str(i+1)] = test_position
+                insert3x1 = insert_boat_check(test_position, test_boat_type, board)
+        fleet["3x1_"+str(i+1)] = test_position
 
     # Bloque de inserción de los 2 barcos 4x1
     for i in range (2):
@@ -121,10 +121,10 @@ def insertar_flota(Tablero, flota):
         while insert4x1 != True:
             test_position = input("Please insert a 4x1 boat position (type 'BOARD' to display the current setting of the fleet):")
             if test_position == "BOARD":
-                fc.print_board(Tablero)
+                fc.print_board(board)
             else:
-                insert4x1 = insert_boat_check(test_position, test_boat_type, Tablero)
-        flota["4x1_"+str(i+1)] = test_position
+                insert4x1 = insert_boat_check(test_position, test_boat_type, board)
+        fleet["4x1_"+str(i+1)] = test_position
             
     # Bloque de inserción del barco 5x1
     test_boat_type = 5
@@ -132,58 +132,66 @@ def insertar_flota(Tablero, flota):
     while insert5x1 != True:
         test_position = input("Please insert a 5x1 boat position (type 'BOARD' to display the current setting of the fleet):")
         if test_position == "BOARD":
-            fc.print_board(Tablero)
+            fc.print_board(board)
         else:
-            insert5x1 = insert_boat_check(test_position, test_boat_type, Tablero)
-    flota["5x1_1"] = test_position
+            insert5x1 = insert_boat_check(test_position, test_boat_type, board)
+    fleet["5x1_1"] = test_position
     """
 
-def inicializar_partida (name_J1,Tablero_J1, Flota_J1,name_J2,Tablero_J2, Flota_J2):
+def start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2):
     # Se inician los perfiles de los jugadores y se elige cual de ellos es el primero
     name_one = input("Please insert the name of one player:")
     name_other = input("Please insert the name of the other player:")
-    order = random.randint(0,1)
-    if order == 0:
-        name_J1 = name_one
-        name_J2 = name_other
+    player_numbers = []
+    name_J1 = name_one
+    name_J2 = name_other
+    for i in range(2):
+        output = (random.randint(1,6))
+        player_numbers.append(output)
+    
+    if player_numbers[0] == player_numbers[1]:
+        print("What are the odds! That's a tie, try again")
+        start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2)
+    elif player_numbers[0] > player_numbers[1]:
+        print (f"{name_J1} is the first player. {name_J2}, you are the second player")
     else:
-        name_J2 = name_one
-        name_J1 = name_other
-    print(f"El primer jugador será {name_J1} y el segundo será {name_J2}")
+        print(f"{name_J1} is the second player. {name_J2}, you are the first player, you start!")
+           
+
 
     # Se generan el tablero y la flota del jugador 1
-    iniciar_tablero (Tablero_J1)
+    create_board(board_J1)
 
-    insertar_flota(Tablero_J1, Flota_J1)
-    Tablero_J1 = np.array(Tablero_J1)
+    insert_fleet(board_J1, fleet_J1)
+    board_J1 = np.array(board_J1)
 
-    print(Flota_J1)
-    fc.print_board(Tablero_J1)
+    print(fleet_J1)
+    fc.print_board(board_J1)
 
     # Se generan el tablero y la flota del jugador 2
-    iniciar_tablero (Tablero_J2)
+    create_board(board_J2)
 
-    insertar_flota(Tablero_J2, Flota_J2)
-    Tablero_J2 = np.array(Tablero_J2)
+    insert_fleet(board_J2, fleet_J2)
+    board_J2 = np.array(board_J2)
 
-    print(Flota_J2)
-    fc.print_board (Tablero_J2)
+    print(fleet_J2)
+    fc.print_board (board_J2)
 
     # Se guarda la partida inicializada
-    nombre_archivo_J1 = "Partida_J1.json"
-    mi_diccionario_J1 = {"Name_J1": name_J1, 
-                    "Flota_J1": Flota_J1, 
-                    "Tablero_J1":Tablero_J1.tolist(),
-                    "Turno":1}
+    file_name_J1 = "Game_J1.json"
+    my_dictionary_J1 = {"Name_J1": name_J1, 
+                    "Fleet_J1": fleet_J1, 
+                    "Board_J1":board_J1.tolist(),
+                    "Turn":1}
 
-    nombre_archivo_J2 = "Partida_J2.json"
-    mi_diccionario_J2 = {"Name_J2": name_J2, 
-                    "Flota_J2": Flota_J2, 
-                    "Tablero_J2":Tablero_J2.tolist(),
-                    "Turno":1}
+    file_name_J2 = "Game_J2.json"
+    my_dictionary_J2 = {"Name_J2": name_J2, 
+                    "Fleet_J2": fleet_J2, 
+                    "Board_J2":board_J2.tolist(),
+                    "Turn":1}
 
-    with open(nombre_archivo_J1, 'w+') as outfile:
-        json.dump(mi_diccionario_J1, outfile, indent=4)
+    with open(f"Partidas_Batalla_Naval/{file_name_J1}", 'w+') as outfile:
+        json.dump(my_dictionary_J1, outfile, indent=4)
 
-    with open(nombre_archivo_J2, 'w+') as outfile:
-        json.dump(mi_diccionario_J2, outfile, indent=4)
+    with open(f"Partidas_Batalla_Naval/{file_name_J2}", 'w+') as outfile:
+        json.dump(my_dictionary_J2, outfile, indent=4)
