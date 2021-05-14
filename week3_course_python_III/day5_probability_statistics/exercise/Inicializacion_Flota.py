@@ -2,6 +2,11 @@ import func as fc
 import numpy as np 
 import random
 import json
+import sys
+import os
+
+sys.path.append(os.path.dirname(__file__)) 
+
 
 def create_board (board):
     for i in range (10):
@@ -48,7 +53,7 @@ def insert_boat_check(pos_str, boat_len, board):
         
         # Se comprueban la coherencia de las coordenadas
         coord_OK = False
-        if (num1 >= 1 and num1 <= 10) and  (num2 >= 1 and num2 <= 10) and (num3 >= 1 and num3 <= 10):
+        if (num1 >= 1 and num1 <= 10) and (num2 >= 1 and num2 <= 10) and (num3 >= 1 and num3 <= 10):
             coord_OK = True
 
         # Se comprueba que el largo del barco y las coordenadas coinciden
@@ -156,8 +161,7 @@ def start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2):
         print (f"{name_J1} is the first player. {name_J2}, you are the second player")
     else:
         print(f"{name_J1} is the second player. {name_J2}, you are the first player, you start!")
-           
-
+        
 
     # Se generan el tablero y la flota del jugador 1
     create_board(board_J1)
@@ -190,8 +194,9 @@ def start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2):
                     "Board_J2":board_J2.tolist(),
                     "Turn":1}
 
-    with open(f"Partidas_Batalla_Naval/{file_name_J1}", 'w+') as outfile:
+    with open(f"Partidas_Batalla_Naval.{file_name_J1}", 'w+') as outfile:
         json.dump(my_dictionary_J1, outfile, indent=4)
 
-    with open(f"Partidas_Batalla_Naval/{file_name_J2}", 'w+') as outfile:
+    with open(f"Partidas_Batalla_Naval.{file_name_J2}", 'w+') as outfile:
         json.dump(my_dictionary_J2, outfile, indent=4)
+
