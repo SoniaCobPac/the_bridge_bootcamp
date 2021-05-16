@@ -5,8 +5,7 @@ import json
 import numpy as np 
 import random
 import time
-import sys 
-import os
+import os.path
 
 #Se crean las variables necesarias para el juego
 name_J1 = ""
@@ -18,7 +17,8 @@ fleet_J2 = {}
 
 # Simulación de secuencia de juego
 print("START THE GAME:")
-init_load = input("Do you want to start a new game (Enter NG for New Game), load the last unstarted game (LG for Last Game), or continue the last unfinished game (UG for Unfinished Game)?") 
+init_load = input("Do you want to start a new game (Enter NG for New Game), \
+    load the last unstarted game (LG for Last Game), or continue the last unfinished game (UG for Unfinished Game)?") 
 
 # Empezamos una nueva partida
 if init_load == 'NG':
@@ -27,16 +27,29 @@ if init_load == 'NG':
 
 elif init_load == 'UG':
     # Cargamos una partida que se empezó a jugar pero no se finalizó
-    with open("Partidas_Batalla_Naval.Game_in_process.json", "r+") as outfile:
-        for line in outfile:
-            to_string = json.dumps(line)
-            to_json = json.loads(to_string) 
+    path=__file__
+    ruta= os.path.dirname(path)
+    json_data = (ruta + "\\Partidas_Batalla_Naval\\Game_in_process.json")
+    with open(f"{json_data}", "r+") as outfile:
+        json_HundirFlota_reload = json.load(outfile)
+    name_J1 = json_HundirFlota_reload['Name_J1']
+    board_J1 = json_HundirFlota_reload['Board_J1']
+    fleet_J1 = json_HundirFlota_reload['Fleet_J1']
+    name_J2 = json_HundirFlota_reload['Name_J2']
+    fleet_J2 = json_HundirFlota_reload['Fleet_J2']
+    board_J2 = json_HundirFlota_reload['Board_J2']
+    turn = json_HundirFlota_reload['Turn']
 else:
     # Cargamos una partida donde ya tenemos los barcos de los dos jugadores pero el juego no se inició
-    with open('Partidas_Batalla_Naval.Game_J1.json', 'r+') as outfile:
+    path=__file__
+    ruta= os.path.dirname(path)
+    json_data1 = (ruta + "\\Partidas_Batalla_Naval\\Game_J1.json")
+    json_data2 = (ruta + "\\Partidas_Batalla_Naval\\Game_J2.json")
+
+    with open(f"{json_data1}", 'r+') as outfile:
         json_HundirFlota1_readed = json.load(outfile)
 
-    with open('Partidas_Batalla_Naval.Game_J2.json', 'r+') as outfile:
+    with open(f"{json_data2}", 'r+') as outfile:
         json_HundirFlota2_readed = json.load(outfile)
 
     name_J1 = json_HundirFlota1_readed['Name_J1']
@@ -60,6 +73,7 @@ while continue_game:
         continue_game = fc.launch_torpedo(board_J2)
         turn +=1
         fc.auto_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn)
+        fc.exit_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn)
         print("END OF THE PLAYER ONE'S (J1) TURN\n")
     else:
         print("----------TURN OF PLAYER TWO J2--------")
@@ -69,5 +83,6 @@ while continue_game:
         continue_game = fc.launch_torpedo(board_J1)
         turn +=1
         fc.auto_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn)
+        fc.exit_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn)
         print("END OF THE PLAYER TWO'S (J2) TURN\n")
 print("GAME OVER")

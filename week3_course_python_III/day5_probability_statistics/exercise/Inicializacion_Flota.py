@@ -2,10 +2,7 @@ import func as fc
 import numpy as np 
 import random
 import json
-import sys
-import os
-
-sys.path.append(os.path.dirname(__file__)) 
+import os.path
 
 
 def create_board (board):
@@ -96,7 +93,7 @@ def insert_boat_check(pos_str, boat_len, board):
 
 def insert_fleet(board, fleet):
     # Bloque de inserción de los 4 barcos 2x1
-    for i in range (1):
+    for i in range (4):
         test_boat_type = 2
         insert2x1 = False
         while insert2x1 != True:
@@ -106,7 +103,6 @@ def insert_fleet(board, fleet):
             else:
                 insert2x1 = insert_boat_check(test_position, test_boat_type, board)
         fleet["2x1_"+str(i+1)] = test_position
-"""
     # Bloque de inserción de los 3 barcos 3x1
     for i in range (3):
         test_boat_type = 3
@@ -141,26 +137,26 @@ def insert_fleet(board, fleet):
         else:
             insert5x1 = insert_boat_check(test_position, test_boat_type, board)
     fleet["5x1_1"] = test_position
-    """
 
 def start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2):
     # Se inician los perfiles de los jugadores y se elige cual de ellos es el primero
     name_one = input("Please insert the name of one player:")
     name_other = input("Please insert the name of the other player:")
     player_numbers = []
-    name_J1 = name_one
-    name_J2 = name_other
     for i in range(2):
         output = (random.randint(1,6))
         player_numbers.append(output)
-    
     if player_numbers[0] == player_numbers[1]:
         print("What are the odds! That's a tie, try again")
         start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2)
     elif player_numbers[0] > player_numbers[1]:
-        print (f"{name_J1} is the first player. {name_J2}, you are the second player")
+        name_J1 = name_one
+        name_J2 = name_other
+        print (f"{name_one} is the first player. {name_other}, you are the second player")
     else:
-        print(f"{name_J1} is the second player. {name_J2}, you are the first player, you start!")
+        name_J2 = name_one
+        name_J1 = name_other
+        print(f"{name_other} is the second player. {name_one}, you are the first player, you start!")
         
 
     # Se generan el tablero y la flota del jugador 1
@@ -182,21 +178,29 @@ def start_game(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2):
     fc.print_board (board_J2)
 
     # Se guarda la partida inicializada
-    file_name_J1 = "Game_J1.json"
+    #file_name_J1 = "Game_J1.json"
     my_dictionary_J1 = {"Name_J1": name_J1, 
                     "Fleet_J1": fleet_J1, 
                     "Board_J1":board_J1.tolist(),
                     "Turn":1}
 
-    file_name_J2 = "Game_J2.json"
+    #file_name_J2 = "Game_J2.json"
     my_dictionary_J2 = {"Name_J2": name_J2, 
                     "Fleet_J2": fleet_J2, 
                     "Board_J2":board_J2.tolist(),
                     "Turn":1}
+    
+    # Seleccionamos donde queremos guardar los archivos json
+    path=__file__
+    ruta= os.path.dirname(path)
 
-    with open(f"Partidas_Batalla_Naval.{file_name_J1}", 'w+') as outfile:
+    json_data1 = (ruta + "\\Partidas_Batalla_Naval\\Game_J1.json")
+    json_data2 = (ruta + "\\Partidas_Batalla_Naval\\Game_J2.json")
+
+    with open(f"{json_data1}", 'w+') as outfile:
         json.dump(my_dictionary_J1, outfile, indent=4)
 
-    with open(f"Partidas_Batalla_Naval.{file_name_J2}", 'w+') as outfile:
+    with open(f"{json_data2}", 'w+') as outfile:
         json.dump(my_dictionary_J2, outfile, indent=4)
+
 

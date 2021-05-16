@@ -1,11 +1,7 @@
 import numpy as np 
 from re import split
 import json
-import sys
-import os
-
-sys.path.append(os.path.dirname(__file__)) 
-
+import os.path
 
 # Esta función recibe una lista con los elementos de la posición de un barco 
 # y modifica el tablero de juego para dibujarlo
@@ -66,7 +62,7 @@ def launch_torpedo(board):
 
 def auto_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn):
     # Se guarda el avance de la partida en la carpeta del histórico
-    file_name = f"Game_in_process.json"
+    #file_name = f"Game_history.json"
     my_dictionary = {"Name_J1": name_J1, 
                     "Fleet_J1": fleet_J1, 
                     "Board_J1":board_J1,
@@ -74,11 +70,32 @@ def auto_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn):
                     "Fleet_J2": fleet_J2, 
                     "Board_J2":board_J2,
                     "Turn":turn}
+    
     # Re-escribimos el archivo json en cada turno  
-             
-    with open(f"Partidas_Batalla_Naval.{file_name}", 'a+') as outfile:
+    path=__file__
+    ruta= os.path.dirname(path)
+    json_data = (ruta + "\\Partidas_Batalla_Naval\\Game_History.json")
+
+    with open(f"{json_data}", 'a+') as outfile:
         json.dump(my_dictionary, outfile, indent=4)
 
+def exit_save(name_J1,board_J1, fleet_J1,name_J2,board_J2, fleet_J2, turn):
+    # Se guarda el avance de la partida en la carpeta del histórico
+    #file_name = f"Game_in_process.json"
+    my_dictionary = {"Name_J1": name_J1, 
+                    "Fleet_J1": fleet_J1, 
+                    "Board_J1":board_J1,
+                    "Name_J2": name_J2, 
+                    "Fleet_J2": fleet_J2, 
+                    "Board_J2":board_J2,
+                    "Turn":turn}
+    
+    # Re-escribimos el archivo json en cada turno  
+    path=__file__
+    ruta= os.path.dirname(path)
+    json_data = (ruta + "\\Partidas_Batalla_Naval\\Game_in_process.json")
 
+    with open(f"{json_data}", 'w+') as outfile:
+        json.dump(my_dictionary, outfile, indent=4)
 
   
