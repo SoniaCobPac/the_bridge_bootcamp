@@ -50,10 +50,14 @@ def main():
         DEBUG = json_readed["debug"]
         HOST = json_readed["host"]
         PORT_NUM = json_readed["port"]
+        # HOST= "0.0.0.0" Abro mis puertos para las redes exteriores
+        # HOST = "127.0.0.1" Abro mis puertos para las redes internas - es lo que tengo que elegir para mi proyecto EDA
+        
         app.run(debug=DEBUG, host=HOST, port=PORT_NUM) #debug=True muestra el error en la web
     else:
         print("Server settings.json doesn't allow to start server. " + 
             "Please, allow it to run it.")
+
 
 if __name__ == "__main__":
     main()
