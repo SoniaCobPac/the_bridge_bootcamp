@@ -10,10 +10,6 @@ UPLOAD_FOLDER = os.sep + "static" + os.sep
 app = Flask(__name__)   # El atributo name es el nombre del archivo desde donde los estoy ejecutando 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'hellohello'
-# creamos un diccionario:
-options = {"Genre_list":["hola", "adios"],
-"Platform_list":[1,2,3,4,5,6],
-"Publisher_list":['Clara', 'Borja', 'Gabriel']}
 
 # Estas dos funciones van a ser accesibles desde la API
 @app.route("/") #esta función es la que se va a llamar por defecto
