@@ -38,5 +38,5 @@ if __name__ == '__main__':
     # si 0.0.0.0 no funciona externamente desde la IP privada de tu PC
     # es que tu ordenador o del dispositivo desde el que se accede 
     # tiene bloqueada la conexión (antivirus / firewall)
-    app.run(host='0.0.0.0',port=os.getenv("PORT", 1991), debug=True)    
+    app.run(host='127.0.0.1',port=os.getenv("PORT", 1991), debug=True)    
     #app es la clase de la instancia Class

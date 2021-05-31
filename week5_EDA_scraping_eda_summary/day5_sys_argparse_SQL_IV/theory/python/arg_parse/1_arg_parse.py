@@ -38,5 +38,3 @@ print("\n####################")
 
 # 'python' 'ruta' 'args'
  
-
-# volver a mirar la clase 17.05.2021 para ver como escribir parametros en la terminal
