@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def plot_data(X, y):
     """
     Plots the data points X and y into a new figure.
