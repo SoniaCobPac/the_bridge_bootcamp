@@ -22,8 +22,8 @@ def visualize_boundary(X, y, clf):
         The trained SVM.
     """
     plot_data(X, y)
-    x1_plot = np.linspace(np.min(X[:, 0]), np.max(X[:, 0]), 100)
-    x2_plot = np.linspace(np.min(X[:, 1]), np.max(X[:, 1]), 100)
+    x1_plot = np.linspace(np.min(X[:, 0]), np.max(X[:, 0]), 1000)
+    x2_plot = np.linspace(np.min(X[:, 1]), np.max(X[:, 1]), 1000)
     X1, X2 = np.meshgrid(x1_plot, x2_plot)
     vals = np.zeros(X1.shape)
 
