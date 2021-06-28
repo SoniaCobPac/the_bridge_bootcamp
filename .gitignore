@@ -35,6 +35,9 @@ data_file*
 laliga*
 musical_Ins*
 
+finished_model*
+*model_val*
+trial_1
 
 # Byte-compiled / optimized
 _pycache_/
